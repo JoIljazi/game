@@ -11,7 +11,6 @@ class Board:
     def updateBoard(self,player,move):  #moves are from 0 to 5 as array index, player is 1 or 2 */
         
         tempBins=self.bins
-        print(tempBins)
         if(player==2):
             move=move+6
 
@@ -21,15 +20,11 @@ class Board:
         tempBins[move]=0
 
         for i in range(1,stones+1):
-            print(i)
-            print(tempBins[(move+i)%12])
-            print(tempBins[(move+i)%12]+1)
             tempBins[(move+i)%12]=tempBins[(move+i)%12]+1
             
 
         if (self.validConfiguration(tempBins)==True):
             self.bins=tempBins
-            print(tempBins)
             print(self.bins)
 
     def validConfiguration(self,tempBins,player):   #implement later
