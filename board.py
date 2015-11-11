@@ -32,5 +32,12 @@ class Board:
             print(tempBins)
             print(self.bins)
 
-    def validConfiguration(self,tempBins):   #implement later 
-        return True
+    def validConfiguration(self,tempBins,player):   #implement later
+        if (player==1):
+            firstIndex = 0
+            else:
+                firstIndex = 6
+        for i in range (0,5)
+            if (tempBins[firstIndex+i]>0):
+                return True
+        return False
