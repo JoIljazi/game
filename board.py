@@ -15,19 +15,18 @@ class Board:
             move=move+6
 
         stones=tempBins[move]
-        print(move)
-        print(stones)
         tempBins[move]=0
 
         for i in range(1,stones+1):
             tempBins[(move+i)%12]=tempBins[(move+i)%12]+1
-            
+
+        earnedPoints = collectPoints(player,(stones+move)%12,tempBins)
 
         if (self.validConfiguration(tempBins)==True):
             self.bins=tempBins
             print(self.bins)
 
-    def validConfiguration(self,tempBins,player):   #implement later
+    def validConfiguration(self,tempBins,player):   #to be tested
         if (player==1):
             firstIndex = 0
             else:
@@ -36,3 +35,33 @@ class Board:
             if (tempBins[firstIndex+i]>0):
                 return True
         return False
+
+    def collectPoints(player,lastAffected,tempBins):   #TO TEST keep track of how much in all
+        lastAffected=lastAffected+12
+
+        i=lastAffected
+        while(ownBin(player,i%12)):
+            i=i-1
+
+        points=0
+        ongoingCollection=True
+
+        while(ongoingCollection):
+            if (!ownBin(player,i%12)) && ((tempBins[i] == 2) || (tempBins[i] == 3)):
+                points = points + tempBins[i]
+                tempBins[i] = 0
+                i=i+1
+                else:
+                    ongoingCollection=False
+
+        return points
+
+
+    def ownBin(player,ownbin):
+        return(((player==1) && (0<=ownbin) && (ownbin<=5)) || ((player==2) && (6<=ownbin) && (ownbin<=11)))
+
+    
+
+
+    def printBoard():
+        return True    # implement later
