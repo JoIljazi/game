@@ -1,3 +1,4 @@
+from copy import deepcopy
 class Board:
 
     
@@ -5,6 +6,7 @@ class Board:
     def __init__(self,player1,player2):
         self.player1=player1
         self.player2=player2
+        # self.bins=[1, 3, 2, 4, 0, 6, 0, 0, 0, 0, 3, 7] For testing
         self.bins=[4,4,4,4,4,4,4,4,4,4,4,4]
         
     def collectPoints(self,player,lastAffected,tempBins):   #TO TEST keep track of how much in all
@@ -33,31 +35,41 @@ class Board:
             else:
                 print("Stopping!")
                 ongoingCollection=False
-                if (not self.ownBin(player,i%12)):
+                if (self.ownBin(player,i%12)):
                     print("Ended up in own houses ", i%12)
                 elif ((tempBins[i%12] != 2) and (tempBins[i%12] != 3)):
                     print("Stones neither 2 nor 3", tempBins[i%12])
         return points
 
 
-    def updateBoard(self,player,move):  #moves are from 0 to 5 as array index, player is 1 or 2 */
+    def updateBoard(self,player,move):  #moves are from 0 to 5 as array index, player is 1 or 2
         
-        tempBins=self.bins
+        tempBins=deepcopy(self.bins)
+        
         if(player==2):
             move=move+6
 
         stones=tempBins[move]
         tempBins[move]=0
 
-        for i in range(1,stones+1):
-            tempBins[(move+i)%12]=tempBins[(move+i)%12]+1
+        index = 1
+        while (index<=stones):
+            if (((move+index)%12)!=(move%12)):
+                tempBins[(move+index)%12]=tempBins[(move+index)%12]+1
+                index = index + 1
+            else:
+                stones = stones + 1
+                index = index + 1
 
         earnedPoints = self.collectPoints(player,(stones+move)%12,tempBins)
 
         if (self.validConfiguration(tempBins,player)):
-            self.bins=tempBins
-            print(self.bins)
-            print(earnedPoints)
+            print("Valid configuration found. Changing from ", self.bins, " to ", tempBins)
+            self.bins=deepcopy(tempBins)
+            print("Earned point ",earnedPoints)
+        else:
+            print("Invalid configuration", tempBins)
+            print("Original configuration unchanged", self.bins)
 
     def validConfiguration(self,tempBins,player):   #to be tested
         if (player==1):
@@ -65,18 +77,14 @@ class Board:
         else:
             firstIndex = 6
             
-        for i in range (0,5):
+        for i in range (0,6):
             if (tempBins[firstIndex+i]>0):
                 return True
         return False
 
-    
-
 
     def ownBin(self,player,ownbin):
         return(((player==1) and (0<=ownbin) and (ownbin<=5)) or ((player==2) and (6<=ownbin) and (ownbin<=11)))
-
-    
 
 
     def printBoard():
