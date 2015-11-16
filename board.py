@@ -1,7 +1,8 @@
 from copy import deepcopy
 class Board:
 
-    
+    score1=0
+    score2=0
     
     def __init__(self,player1,player2):
         self.player1=player1
@@ -39,6 +40,12 @@ class Board:
                     print("Ended up in own houses ", i%12)
                 elif ((tempBins[i%12] != 2) and (tempBins[i%12] != 3)):
                     print("Stones neither 2 nor 3", tempBins[i%12])
+
+        if(player==1):
+            self.score1=self.score1+points
+        else:
+            self.score2=self.score2+points
+            
         return points
 
 
@@ -67,6 +74,8 @@ class Board:
             print("Valid configuration found. Changing from ", self.bins, " to ", tempBins)
             self.bins=deepcopy(tempBins)
             print("Earned point ",earnedPoints)
+            print("Player 1 score", self.score1)
+            print("Player 2 score", self.score2)
         else:
             print("Invalid configuration", tempBins)
             print("Original configuration unchanged", self.bins)
