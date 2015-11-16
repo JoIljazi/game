@@ -15,21 +15,27 @@ def mainGame():
         
         order = input("who plays first? press 0 for our AIplayer and 1 for OpponentPlayer")
         if (order==1):
-                  tempPlayer0=player1
-                  tempPlayer1=player0
-              else:
-                  tempPlayer0=player0
-                  tempPlayer1=player1
+            
+            tempPlayer0=player1
+            tempPlayer1=player0
+        else:
+            tempPlayer0=player0
+            tempPlayer1=player1
               
         myBoard=Board(tempPlayer0,tempPlayer1)
         playerNumber = 0
-        while (!end)
+        end=False
+        while (not end):
+            
             move=tempPlayer0.move()
             myBoard.updateBord(playerNumber,move)
             playerNumber=(playerNumber+1)%2
             temp=tempPlayer0
             tempPlayer0 = tempPlayer1
             tempPlayer1 = temp
+
+            if(myBoard.endGame):
+                end=True
             #check end - winner or draw 
 
             

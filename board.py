@@ -3,6 +3,7 @@ class Board:
 
     score1=0
     score2=0
+    endGame=False
     
     def __init__(self,player1,player2):
         self.player1=player1
@@ -76,6 +77,8 @@ class Board:
             print("Earned point ",earnedPoints)
             print("Player 1 score", self.score1)
             print("Player 2 score", self.score2)
+            
+            print("Is game over?", self.endGame )
         else:
             print("Invalid configuration", tempBins)
             print("Original configuration unchanged", self.bins)
@@ -95,6 +98,11 @@ class Board:
     def ownBin(self,player,ownbin):
         return(((player==1) and (0<=ownbin) and (ownbin<=5)) or ((player==2) and (6<=ownbin) and (ownbin<=11)))
 
+
+    def checkStatus(self):
+        if(self.score1 >=24 or self.score2 >=24):
+            endGame=True
+        
 
     def printBoard():
         return True    # implement later
