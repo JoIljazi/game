@@ -2,7 +2,7 @@ import Board
 import AIPlayer
 import OpponentPlayer
 
-def mainGame():
+def __main__():
 
     print()
     opponentName=raw_input("welcome to new game, give the name of opponent player")
@@ -38,5 +38,5 @@ def mainGame():
                 end=True
             #check end - winner or draw 
 
-            
+if __name__ == "__main__":main()   #a way to make things work??           
     
