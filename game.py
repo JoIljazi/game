@@ -3,7 +3,6 @@ from player import AIPlayer
 from player import OpponentPlayer
 
 
-
 def play(playerA,playerB):
 
         order = input("who plays first? press 1 for our AIplayer and 2 for OpponentPlayer")
@@ -15,10 +14,11 @@ def play(playerA,playerB):
             player1=playerB
 
         myBoard=Board(player0,player1)
+        print(myBoard.s)
         playerNumber = 1
         end=False
         while (not end):
-# to be done:
+            print()
             if (playerNumber == 1):
                 print("your turn, enter no. 1 to 6:", player0.name)
                 move = player0.move(myBoard, player0) - 1   # minus 1 because of array structure
@@ -27,14 +27,19 @@ def play(playerA,playerB):
                 print("your turn, enter no. 1 to 6:", player1.name)
                 move = player1.move(myBoard, player1) - 1   # minus 1 because of array structure
                 myBoard.updateBoard(playerNumber,move)
-            playerNumber=(playerNumber % 2) +1      # change active player
-            #temp=tempPlayer0   # what is this for?
-            #tempPlayer0 = tempPlayer1   # what is this for?
-            #tempPlayer1 = temp   # what is this for?
+
+            # print game status:
+            print("current game status:")
+            myBoard.printBoard(myBoard)
+            print("beens player ", player0.name, ": ", myBoard.getScoreStatus(1))
+            print("beens player ", player1.name, ": ", myBoard.getScoreStatus(2))
 
             #check end - winner or draw:
             if(myBoard.endGame):
                 end=True
+
+            # change active player
+            playerNumber=(playerNumber % 2) +1
 
 
 def main():

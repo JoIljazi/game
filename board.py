@@ -4,23 +4,29 @@ class Board:
     score1=20
     score2=0
     endGame=False
-    
+    s = 6 # enter here the number of holes per player. Finally set to: 12
+    b = 48 # enter here the number of beans in total. Finally set to: 96
+
     
     def __init__(self,player1,player2):
         self.player1=player1
         self.player2=player2
         # self.bins=[1, 3, 2, 4, 0, 6, 0, 0, 0, 0, 3, 7] For testing
-        self.bins=[4,4,4,4,4,4,4,4,4,4,4,4]
+
+        self.bins = [4] * (2 * self.s)
+        #self.bins=[4,4,4,4,4,4,4,4,4,4,4,4]
+        print("Original configuration: ", self.bins)
+        self.printBoard(self)
         
     def collectPoints(self,player,lastAffected,tempBins):   
-        lastAffected=lastAffected+48
+        lastAffected=lastAffected+48  # why?!?
 
         i=lastAffected
         # while(self.ownBin(player,i%12)): #This would be OK if you could capture from opponent even if you end up in your own hause
         #           print("Step ",i," backward")
         #           i=i-1
 
-        if (self.ownBin(player,i%12)):
+        if (self.ownBin(player,i%(self.s*2))):
             print("Step ",i," took to my own house")
             return 0
         
@@ -28,20 +34,20 @@ class Board:
         ongoingCollection=True
 
         while(ongoingCollection):
-            print("Considering bin ", i%12)
-            if ((not self.ownBin(player,i%12)) and ((tempBins[i%12] == 2) or (tempBins[i%12] == 3))):
-                points = points + tempBins[i%12]
-                print("Earning ", tempBins[i%12])
-                tempBins[i%12] = 0
+            print("Considering bin ", i%(self.s*2))
+            if ((not self.ownBin(player,i%(self.s*2))) and ((tempBins[i%(self.s*2)] == 2) or (tempBins[i%(self.s*2)] == 3))):
+                points = points + tempBins[i%(self.s*2)]
+                print("Earning ", tempBins[i%(self.s*2)])
+                tempBins[i%(self.s*2)] = 0
                 print("Now I have ",points, " and the board is ", tempBins)
                 i=i-1
             else:
                 print("Stopping!")
                 ongoingCollection=False
-                if (self.ownBin(player,i%12)):
-                    print("Ended up in own houses ", i%12)
-                elif ((tempBins[i%12] != 2) and (tempBins[i%12] != 3)):
-                    print("Stones neither 2 nor 3", tempBins[i%12])
+                if (self.ownBin(player,i%(self.s*2))):
+                    print("Ended up in own houses ", i%(self.s*2))
+                elif ((tempBins[i%12] != 2) and (tempBins[i%(self.s*2)] != 3)):
+                    print("Stones neither 2 nor 3", tempBins[i%(self.s*2)])
 
         if(player==1):
             self.score1=self.score1+points
@@ -53,24 +59,24 @@ class Board:
 
     def updateBoard(self,player,move):  #moves are from 0 to 5 as array index, player is 1 or 2
         
-        tempBins=deepcopy(self.bins)
+        tempBins=deepcopy(self.bins) # copy by value
         
         if(player==2):
-            move=move+6
+            move=move+self.s # for the number within the list
 
         stones=tempBins[move]
         tempBins[move]=0
 
         index = 1
         while (index<=stones):
-            if (((move+index)%12)!=(move%12)):
-                tempBins[(move+index)%12]=tempBins[(move+index)%12]+1
+            if (((move+index)%(self.s*2))!=(move%(self.s*2))):
+                tempBins[(move+index)%(self.s*2)]=tempBins[(move+index)%(self.s*2)]+1
                 index = index + 1
             else:
                 stones = stones + 1
                 index = index + 1
 
-        earnedPoints = self.collectPoints(player,(stones+move)%12,tempBins)
+        earnedPoints = self.collectPoints(player,(stones+move)%(self.s*2),tempBins)
 
         if (self.validConfiguration(tempBins,player) and stones >0):                              #add here condition that house u move is not empty!!!
             print("Valid configuration found. Changing from ", self.bins, " to ", tempBins)
@@ -81,12 +87,12 @@ class Board:
         
 
             if(player==1):
-                playerBins=deepcopy(tempBins[0:6])
+                playerBins=deepcopy(tempBins[0:self.s])
             else:
-                playerBins=deepcopy(tempBins[6:12])
+                playerBins=deepcopy(tempBins[self.s:(self.s*2)])
             
             self.checkMoves(playerBins)
-            self.checkStatus()
+            self.checkStatus(tempBins,player)
             print("Is game over?", self.endGame )
         else:
             print("Invalid configuration", tempBins)
@@ -94,31 +100,56 @@ class Board:
 
     def validConfiguration(self,tempBins,player):   #it should check if we are causing starv in opponent
         if (player==1):
-            firstIndex = 6
+            firstIndex = self.s
         else:
             firstIndex = 0
             
-        for i in range (0,6):
+        for i in range (0,self.s):
             if (tempBins[firstIndex+i]>0):  
                 return True
         return False
 
 
-    def ownBin(self,player,ownbin):
-        return(((player==1) and (0<=ownbin) and (ownbin<=5)) or ((player==2) and (6<=ownbin) and (ownbin<=11)))
+    def ownBin(self,player,ownbin): # returns true/false whether the accessed object is one's own bin
+        return(((player==1) and (0<=ownbin) and (ownbin<=(self.s-1))) or ((player==2) and (self.s<=ownbin) and (ownbin<=((self.s*2)-1))))
 
 
-    def checkMoves(self,playerBins):
+    def checkMoves(self,playerBins): #
         print("im inside checkMoves and playerBins is:", playerBins)
-        for i in range(0,6):
+        for i in range(0,self.s):
             if (playerBins[i] > 0):
                 return True
         return False
 
-    def checkStatus(self):
-        if(self.score1 >24 or self.score2 >24 or (not self.checkMoves)):   ### add the end of game for non available moves by itself not as result of big slam!!! DISCUSS THIS TYPE OF EVENT
+    def checkStatus(self,tempBins,player): # check whether game is over
+        if(self.score1 >(self.b / 2) or self.score2 >(self.b / 2) or (not self.checkMoves)):   ### add the end of game for non available moves by itself not as result of big slam!!! DISCUSS THIS TYPE OF EVENT
             self.endGame=True
-          
+        # check whether there are still possible moves
+        if (player==1):
+            lastIndex = self.s *2
+        else:
+            lastIndex = self.s
+        i = 1
+        while (i <= self.s):
+            if (tempBins[lastIndex-i] >= i):  # compare the no. beans in a hole  with distance to opponent's holes, starting with closest to opponent
+                break
+            else:
+                i = i+1
+        else:
+            print("no possible move that doesn't starve the opponent. Game over.")
+            self.endGame=True
 
-    def printBoard(self, aBoard):
-        return True    # implement later
+    def printBoard(self, aBoard): #
+        housesP1 = list(map(chr, range(65, 65+self.s)))
+        housesP2 = list(map(chr, reversed(range(97, 97+self.s))))
+        print("AIplayer:    ", housesP1)
+        print("AIplayer: -> ", self.bins[0:self.s], " =>")
+        print("OpPlayer: => ", self.bins[self.s:(self.s*2)], " ->")
+        print("OpPlayer:    ", housesP2)
+
+    def getScoreStatus(self, player):
+        if (player == 1):
+            return self.score1
+        else:
+            return self.score2
+
