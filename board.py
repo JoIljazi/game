@@ -19,7 +19,7 @@ class Board:
         self.printBoard(self)
         
     def collectPoints(self,player,lastAffected,tempBins):   
-        lastAffected=lastAffected+48  # why?!?
+        lastAffected=lastAffected+self.b  # why?!?
 
         i=lastAffected
         # while(self.ownBin(player,i%12)): #This would be OK if you could capture from opponent even if you end up in your own hause
@@ -67,12 +67,13 @@ class Board:
         stones=tempBins[move]
         tempBins[move]=0
 
+        # move the stones:
         index = 1
         while (index<=stones):
-            if (((move+index)%(self.s*2))!=(move%(self.s*2))):
+            if (((move+index)%(self.s*2))!=(move%(self.s*2))):  # avoid moving stones to house where they came from
                 tempBins[(move+index)%(self.s*2)]=tempBins[(move+index)%(self.s*2)]+1
                 index = index + 1
-            else:
+            else:               # in case it's the house from move, increase index and stones by one (because of condition)
                 stones = stones + 1
                 index = index + 1
 
@@ -91,7 +92,7 @@ class Board:
             else:
                 playerBins=deepcopy(tempBins[self.s:(self.s*2)])
             
-            self.checkMoves(playerBins)
+            #self.checkMoves(playerBins)
             self.checkStatus(tempBins,player)
             print("Is game over?", self.endGame )
         else:
@@ -114,30 +115,28 @@ class Board:
         return(((player==1) and (0<=ownbin) and (ownbin<=(self.s-1))) or ((player==2) and (self.s<=ownbin) and (ownbin<=((self.s*2)-1))))
 
 
-    def checkMoves(self,playerBins): #
-        print("im inside checkMoves and playerBins is:", playerBins)
-        for i in range(0,self.s):
-            if (playerBins[i] > 0):
-                return True
-        return False
-
     def checkStatus(self,tempBins,player): # check whether game is over
-        if(self.score1 >(self.b / 2) or self.score2 >(self.b / 2) or (not self.checkMoves)):   ### add the end of game for non available moves by itself not as result of big slam!!! DISCUSS THIS TYPE OF EVENT
+        if(self.score1 >(self.b / 2) or self.score2 >(self.b / 2)):   ### add the end of game for non available moves by itself not as result of big slam!!! DISCUSS THIS TYPE OF EVENT
             self.endGame=True
         # check whether there are still possible moves
         if (player==1):
             lastIndex = self.s *2
+            firstIndex = self.s
         else:
             lastIndex = self.s
-        i = 1
-        while (i <= self.s):
-            if (tempBins[lastIndex-i] >= i):  # compare the no. beans in a hole  with distance to opponent's holes, starting with closest to opponent
-                break
+            firstIndex = 0
+
+        opBeans = sum(tempBins[firstIndex:lastIndex])
+        if (opBeans == 0):
+            i = 1
+            while (i <= self.s):
+                if (tempBins[lastIndex-i] >= i):  # compare the no. beans in a hole  with distance to opponent's holes, starting with closest to opponent
+                    break
+                else:
+                    i = i+1
             else:
-                i = i+1
-        else:
-            print("no possible move that doesn't starve the opponent. Game over.")
-            self.endGame=True
+                print("no possible move that doesn't starve the opponent. Game over.")
+                self.endGame=True
 
     def printBoard(self, aBoard): #
         housesP1 = list(map(chr, range(65, 65+self.s)))

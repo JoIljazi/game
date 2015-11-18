@@ -20,12 +20,20 @@ def play(playerA,playerB):
         while (not end):
             print()
             if (playerNumber == 1):
-                print("your turn, enter no. 1 to 6:", player0.name)
-                move = player0.move(myBoard, player0) - 1   # minus 1 because of array structure
+                print("your turn, enter no. 1 to ", myBoard.s, ": ", player0.name)
+                move = 0
+                init = True
+                while(myBoard.bins[move] == 0 or init):     # mkae sure that no empty field is selected
+                    move = player0.move(myBoard, player0) - 1   # minus 1 because of array structure
+                    init = False
                 myBoard.updateBoard(playerNumber,move)
             elif (playerNumber == 2):
-                print("your turn, enter no. 1 to 6:", player1.name)
-                move = player1.move(myBoard, player1) - 1   # minus 1 because of array structure
+                print("your turn, enter no. 1 to ", myBoard.s, ": ",  player1.name)
+                move = 0
+                init = True
+                while(myBoard.bins[move+myBoard.s] == 0 or init):   # mkae sure that no empty field is selected
+                    move = player1.move(myBoard, player1) - 1   # minus 1 because of array structure
+                    init = False
                 myBoard.updateBoard(playerNumber,move)
 
             # print game status:
