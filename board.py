@@ -9,14 +9,13 @@ class Board:
 
     
     def __init__(self,player1,player2):
-        self.player1=player1
-        self.player2=player2
+        #self.player1=player1
+        #self.player2=player2
         # self.bins=[1, 3, 2, 4, 0, 6, 0, 0, 0, 0, 3, 7] For testing
 
         self.bins = [4] * (2 * self.s)
         #self.bins=[4,4,4,4,4,4,4,4,4,4,4,4]
         print("Original configuration: ", self.bins)
-        self.printBoard(self)
         
     def collectPoints(self,player,lastAffected,tempBins):   
         lastAffected=lastAffected+self.b  # why?!?
@@ -61,8 +60,8 @@ class Board:
         
         tempBins=deepcopy(self.bins) # copy by value
         
-        if(player==2):
-            move=move+self.s # for the number within the list
+        #if(player==2):
+        #    move=move+self.s # for the number within the list
 
         stones=tempBins[move]
         tempBins[move]=0
@@ -138,17 +137,20 @@ class Board:
                 print("no possible move that doesn't starve the opponent. Game over.")
                 self.endGame=True
 
-    def printBoard(self, aBoard): #
-        housesP1 = list(map(chr, range(65, 65+self.s)))
-        housesP2 = list(map(chr, reversed(range(97, 97+self.s))))
-        print("AIplayer:    ", housesP1)
-        print("AIplayer: -> ", self.bins[0:self.s], " =>")
-        print("OpPlayer: => ", self.bins[self.s:(self.s*2)], " ->")
-        print("OpPlayer:    ", housesP2)
+    def printBoard(self, player1Name, player2Name): # removed: aBoard
+        housesP1 = list(range(1, self.s+1))
+        housesP2 = list(reversed(range(self.s +1, self.s*2+1)))
+        revList = list(reversed(self.bins[self.s:(self.s*2)]))
+        print(player1Name, ":    ", housesP1)
+        print(player1Name, ": -> ", self.bins[0:self.s], " =>")
+        print(player2Name, ": <- ", revList, " <=")
+        print(player2Name, ":    ", housesP2)
+        print("won beans player ", player1Name, ": ", self.score1)
+        print("won beans player ", player2Name, ": ", self.score2)
 
-    def getScoreStatus(self, player):
-        if (player == 1):
-            return self.score1
-        else:
-            return self.score2
+    #def getScoreStatus(self, player):
+    #    if (player == 1):
+    #        return self.score1
+    #    else:
+    #        return self.score2
 

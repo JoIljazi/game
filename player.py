@@ -18,9 +18,7 @@ class AIPlayer(AbstractPlayer):
 class OpponentPlayer(AbstractPlayer):
 
     def move(self,boardState,player):
-        newmove = 0
-        while(not (1 <= newmove <= 6)):
-            newmove=int(input())
+        newmove=int(input())
         return newmove
 
 

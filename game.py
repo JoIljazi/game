@@ -14,7 +14,7 @@ def play(playerA,playerB):
             player1=playerB
 
         myBoard=Board(player0,player1)
-        print(myBoard.s)
+        myBoard.printBoard(player0.name, player1.name)
         playerNumber = 1
         end=False
         while (not end):
@@ -28,19 +28,19 @@ def play(playerA,playerB):
                     init = False
                 myBoard.updateBoard(playerNumber,move)
             elif (playerNumber == 2):
-                print("your turn, enter no. 1 to ", myBoard.s, ": ",  player1.name)
+                print("your turn, enter no. ", myBoard.s+1, "to ", myBoard.s*2,": ", player1.name)
                 move = 0
                 init = True
-                while(myBoard.bins[move+myBoard.s] == 0 or init):   # mkae sure that no empty field is selected
+                while(myBoard.bins[move] == 0 or init):   # mkae sure that no empty field is selected
                     move = player1.move(myBoard, player1) - 1   # minus 1 because of array structure
                     init = False
                 myBoard.updateBoard(playerNumber,move)
 
             # print game status:
             print("current game status:")
-            myBoard.printBoard(myBoard)
-            print("beens player ", player0.name, ": ", myBoard.getScoreStatus(1))
-            print("beens player ", player1.name, ": ", myBoard.getScoreStatus(2))
+            myBoard.printBoard(player0.name, player1.name)
+            #print("beens player ", player0.name, ": ", myBoard.getScoreStatus(1))
+            #print("beens player ", player1.name, ": ", myBoard.getScoreStatus(2))
 
             #check end - winner or draw:
             if(myBoard.endGame):
