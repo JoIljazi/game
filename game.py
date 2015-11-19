@@ -13,7 +13,7 @@ def play(playerA,playerB):
             player0=playerA
             player1=playerB
 
-        myBoard=Board(player0,player1)
+        myBoard=Board()
         myBoard.printBoard(player0.name, player1.name)
         playerNumber = 1
         end=False
@@ -27,6 +27,7 @@ def play(playerA,playerB):
                     move = player0.move(myBoard, player0) - 1   # minus 1 because of array structure
                     init = False
                 myBoard.updateBoard(playerNumber,move)
+                print("player", player0.name, "played field", move+1)
             elif (playerNumber == 2):
                 print("your turn, enter no. ", myBoard.s+1, "to ", myBoard.s*2,": ", player1.name)
                 move = 0
@@ -35,12 +36,11 @@ def play(playerA,playerB):
                     move = player1.move(myBoard, player1) - 1   # minus 1 because of array structure
                     init = False
                 myBoard.updateBoard(playerNumber,move)
+                print("player ", player1.name, "played field", move+1)
 
             # print game status:
             print("current game status:")
             myBoard.printBoard(player0.name, player1.name)
-            #print("beens player ", player0.name, ": ", myBoard.getScoreStatus(1))
-            #print("beens player ", player1.name, ": ", myBoard.getScoreStatus(2))
 
             #check end - winner or draw:
             if(myBoard.endGame):

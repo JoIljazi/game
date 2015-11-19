@@ -8,22 +8,15 @@ class Board:
     b = 48 # enter here the number of beans in total. Finally set to: 96
 
     
-    def __init__(self,player1,player2):
-        #self.player1=player1
-        #self.player2=player2
+    def __init__(self):
         # self.bins=[1, 3, 2, 4, 0, 6, 0, 0, 0, 0, 3, 7] For testing
-
         self.bins = [4] * (2 * self.s)
-        #self.bins=[4,4,4,4,4,4,4,4,4,4,4,4]
         print("Original configuration: ", self.bins)
         
     def collectPoints(self,player,lastAffected,tempBins):   
         lastAffected=lastAffected+self.b  # why?!?
 
         i=lastAffected
-        # while(self.ownBin(player,i%12)): #This would be OK if you could capture from opponent even if you end up in your own hause
-        #           print("Step ",i," backward")
-        #           i=i-1
 
         if (self.ownBin(player,i%(self.s*2))):
             print("Step ",i," took to my own house")
@@ -60,9 +53,6 @@ class Board:
         
         tempBins=deepcopy(self.bins) # copy by value
         
-        #if(player==2):
-        #    move=move+self.s # for the number within the list
-
         stones=tempBins[move]
         tempBins[move]=0
 
@@ -148,9 +138,4 @@ class Board:
         print("won beans player ", player1Name, ": ", self.score1)
         print("won beans player ", player2Name, ": ", self.score2)
 
-    #def getScoreStatus(self, player):
-    #    if (player == 1):
-    #        return self.score1
-    #    else:
-    #        return self.score2
 
