@@ -1,17 +1,19 @@
 from copy import deepcopy
 class Board:
  
-    score1=20
+    score1=0
     score2=0
     endGame=False
     s = 6 # enter here the number of holes per player. Finally set to: 12
     b = 48 # enter here the number of beans in total. Finally set to: 96
 
     
-    def __init__(self):
+    def __init__(self, structure, score1, score2):
         # self.bins=[1, 3, 2, 4, 0, 6, 0, 0, 0, 0, 3, 7] For testing
-        self.bins = [4] * (2 * self.s)
+        self.bins = structure
         print("Original configuration: ", self.bins)
+        self.score1 = score1
+        self.score2 = score2
         
     def collectPoints(self,player,lastAffected,tempBins):   
         lastAffected=lastAffected+self.b  # why?!?

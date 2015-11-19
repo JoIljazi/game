@@ -1,3 +1,4 @@
+import minmaxCut
 class AbstractPlayer():
 
     def __init__(self,name):
@@ -11,7 +12,8 @@ class AbstractPlayer():
 class AIPlayer(AbstractPlayer):
 
     def move(self,boardState,player):
-        newmove=minmax()
+        print("TEST *************** ", boardState.score1, boardState.score2)
+        newmove=minmaxCut.minmax(player, boardState.bins, boardState.score1, boardState.score2)
         return newmove
 
 

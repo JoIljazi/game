@@ -5,6 +5,7 @@ from player import OpponentPlayer
 
 def play(playerA,playerB):
 
+        s = 6 # enter here the number of holes per player. Finally set to: 12
         order = input("who plays first? press 1 for our AIplayer and 2 for OpponentPlayer")
         if (order=="2"):
             player0=playerB
@@ -13,7 +14,7 @@ def play(playerA,playerB):
             player0=playerA
             player1=playerB
 
-        myBoard=Board()
+        myBoard=Board([4] * (2 * s), 0, 0)
         myBoard.printBoard(player0.name, player1.name)
         playerNumber = 1
         end=False
@@ -33,7 +34,7 @@ def play(playerA,playerB):
                 move = 0
                 init = True
                 while(myBoard.bins[move] == 0 or init):   # mkae sure that no empty field is selected
-                    move = player1.move(myBoard, player1) - 1   # minus 1 because of array structure
+                    move = player1.move(myBoard, playerNumber) - 1   # minus 1 because of array structure
                     init = False
                 myBoard.updateBoard(playerNumber,move)
                 print("player ", player1.name, "played field", move+1)

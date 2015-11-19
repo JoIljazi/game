@@ -1,45 +1,72 @@
-import Stack
+from Stack import Stack
+from board import Board
+from copy import deepcopy
 
-def minmax(player,state,d):
+def minmax(player,state, score1, score2):
 
-    nodeStack=Stack()
-    nodeStack.push(state)
+    d = 2   # definition of depth of search
+    s = 6 # enter here the number of holes per player. Finally set to: 12
+
 
     if (player==1):
-        maxMoves=range(0,6)
-        minMoves=range(6,12)
+        maxMoves=s
+        minMoves=2*s
     else:
-        maxMoves=range(6,12)
-        minMoves=range(0,6)
+        maxMoves=2*s
+        minMoves=s
+
+    ## evalFunctions
+    def evalFunction(state):
+        if (player==1):
+            delta = state.score0 - state.score1
+        else:
+            delta = state.score0 - state.score1
+        return delta
+
     
-    
+    # when to stop going down in tree, returns true or false
+    def cutOff(state):
+        if (nodeStack.size() == d or state.endGame):
+            return True
+        else:
+            return False
+
+    # update state and create new child
+    def updateState(board,move, player):
+        tempBoard = Board(board.bins, board.score1, board.score2)
+        tempBoard.updateBoard(player, move)
+        return tempBoard
 
 
     def maxNode(state):
-        if(cutOff(state,depth)):
+        if(cutOff(state)):
             nodeStack.pull()
-            return evalFunction()
-        v= -infinity
-        while(maxMoves):
-            child=updateState(nodeStack.peek(),move,player)
-            if (child != nodeStack.peek()):
+            return evalFunction(state)
+        v= -1000
+        o = 0
+        while(o < maxMoves):
+            child=updateState(nodeStack.peek(),o,player)
+            if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
-                v=max(v,minNode(nodeStack.peek())
-            move=move+1
+                v=max(v,minNode(nodeStack.peek()))
+            o=o+1
+
 
         return v
 
     def minNode(state):
-        if(cutOff(state,depth)):
-            nodeStack.pull()
-            return evalFunction()
-        v= infinity
-        while(minMoves):
-            child=updateState(nodeStack.peek(),move,((player%2)+1))
-            if (child != nodeStack.peek()):
+        if(cutOff(state)):
+            res = evalFunction(state)
+            nodeStack.pop()
+            return res
+        v= 1000
+        n = 0
+        while(n < minMoves):
+            child=updateState(nodeStack.peek(),n,((player%2)+1))
+            if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
-                v=min(v,maxNode(nodeStack.peek())
-            move=move+1
+                v=min(v,maxNode(nodeStack.peek()))
+            v=v+1
 
         return v              
 
@@ -47,14 +74,19 @@ def minmax(player,state,d):
                           
     #start
     results={}
-    v= -infinit
-    while(maxMoves):
-        move=maxMoves
-        child=updateState(nodeStack.peek(),move)
-        if(child !=nodeStack.peek()):
+    v= -1000
+    nodeStack=Stack()
+    orig=Board(state, score1, score2)
+    nodeStack.push(orig)
+    m=0
+    while(m < maxMoves):
+        child = updateState(nodeStack.peek(),m, player)
+        if(child.bins != orig.bins):
             nodeStack.push(child)
             v=max(v,minNode(nodeStack.peek()))
-            results[move]=v
-    return decision(results,v)
+            results[0]=m
+            results[1]=v
+        m = m +1
+    return results[0]
                       
                 
