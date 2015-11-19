@@ -1,4 +1,4 @@
-from Stack import Stack
+from Stack import stack
 from board import Board
 from copy import deepcopy
 
@@ -18,9 +18,9 @@ def minmax(player,state, score1, score2):
     ## evalFunctions
     def evalFunction(state):
         if (player==1):
-            delta = state.score0 - state.score1
+            delta = state.score1 - state.score2
         else:
-            delta = state.score0 - state.score1
+            delta = state.score2 - state.score1
         return delta
 
     
@@ -40,8 +40,8 @@ def minmax(player,state, score1, score2):
 
     def maxNode(state):
         if(cutOff(state)):
-            nodeStack.pull()
-            return evalFunction(state)
+            st=nodeStack.pop()
+            return evalFunction(st)
         v= -1000
         o = 0
         while(o < maxMoves):
@@ -56,8 +56,8 @@ def minmax(player,state, score1, score2):
 
     def minNode(state):
         if(cutOff(state)):
-            res = evalFunction(state)
-            nodeStack.pop()
+            st=nodeStack.pop()
+            res = evalFunction(st)
             return res
         v= 1000
         n = 0
@@ -66,7 +66,7 @@ def minmax(player,state, score1, score2):
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=min(v,maxNode(nodeStack.peek()))
-            v=v+1
+            n=n+1
 
         return v              
 
@@ -83,10 +83,12 @@ def minmax(player,state, score1, score2):
         child = updateState(nodeStack.peek(),m, player)
         if(child.bins != orig.bins):
             nodeStack.push(child)
+            temp=v
             v=max(v,minNode(nodeStack.peek()))
-            results[0]=m
-            results[1]=v
-        m = m +1
-    return results[0]
+            if (v != temp):
+                results["value"]=v
+                results["move"]=m
+        m = m+1
+    return results["move"]
                       
                 
