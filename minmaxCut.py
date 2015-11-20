@@ -1,4 +1,4 @@
-from Stack import stack
+from Stack import Stack
 from board import Board
 from copy import deepcopy
 
@@ -6,6 +6,10 @@ def minmax(player,state, score1, score2):
 
     d = 2   # definition of depth of search
     s = 6 # enter here the number of holes per player. Finally set to: 12
+
+    nodeStack=Stack()
+    orig=Board(state, score1, score2)
+    nodeStack.push(orig)
 
 
     if (player==1):
@@ -75,9 +79,9 @@ def minmax(player,state, score1, score2):
     #start
     results={}
     v= -1000
-    nodeStack=Stack()
-    orig=Board(state, score1, score2)
-    nodeStack.push(orig)
+    #nodeStack=Stack()
+    #orig=Board(state, score1, score2)
+    #nodeStack.push(orig)
     m=0
     while(m < maxMoves):
         child = updateState(nodeStack.peek(),m, player)

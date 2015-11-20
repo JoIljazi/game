@@ -25,7 +25,7 @@ def play(playerA,playerB):
                 move = 0
                 init = True
                 while(myBoard.bins[move] == 0 or init):     # mkae sure that no empty field is selected
-                    move = player0.move(myBoard, player0) - 1   # minus 1 because of array structure
+                    move = player0.move(myBoard, playerNumber) - 1   # minus 1 because of array structure
                     init = False
                 myBoard.updateBoard(playerNumber,move)
                 print("player", player0.name, "played field", move+1)
