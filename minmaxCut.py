@@ -1,11 +1,16 @@
-from Stack import Stack
+from stack import Stack
 from board import Board
 from copy import deepcopy
+#from timeit import default_timer as timer
 
 def minmax(player,state, score1, score2):
 
-    d = 2   # definition of depth of search
-    s = 6 # enter here the number of holes per player. Finally set to: 12
+    d = 55  # definition of depth of search
+    s = 12 # enter here the number of holes per player. Finally set to: 12
+
+
+    #start = timer()
+
 
     nodeStack=Stack()
     orig=Board(state, score1, score2)
@@ -14,7 +19,7 @@ def minmax(player,state, score1, score2):
 
     if (player==1):
         maxMoves=s
-        minMoves=2*s
+        minMoves=s*2
     else:
         maxMoves=2*s
         minMoves=s
@@ -22,15 +27,15 @@ def minmax(player,state, score1, score2):
     ## evalFunctions
     def evalFunction(state):
         if (player==1):
-            delta = state.score1 - state.score2
+            delta = orig.score1 - orig.score2
         else:
-            delta = state.score2 - state.score1
+            delta = orig.score2 - orig.score1
         return delta
 
     
     # when to stop going down in tree, returns true or false
     def cutOff(state):
-        if (nodeStack.size() == d or state.endGame):
+        if (nodeStack.size() == d or state.endGame):  # add time constraint
             return True
         else:
             return False
@@ -47,7 +52,7 @@ def minmax(player,state, score1, score2):
             st=nodeStack.pop()
             return evalFunction(st)
         v= -1000
-        o = 0
+        o = maxMoves-s
         while(o < maxMoves):
             child=updateState(nodeStack.peek(),o,player)
             if (child.bins != nodeStack.peek().bins):
@@ -64,7 +69,7 @@ def minmax(player,state, score1, score2):
             res = evalFunction(st)
             return res
         v= 1000
-        n = 0
+        n = minMoves-s
         while(n < minMoves):
             child=updateState(nodeStack.peek(),n,((player%2)+1))
             if (child.bins != nodeStack.peek().bins):
@@ -82,7 +87,7 @@ def minmax(player,state, score1, score2):
     #nodeStack=Stack()
     #orig=Board(state, score1, score2)
     #nodeStack.push(orig)
-    m=0
+    m=maxMoves-s
     while(m < maxMoves):
         child = updateState(nodeStack.peek(),m, player)
         if(child.bins != orig.bins):

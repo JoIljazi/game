@@ -12,9 +12,9 @@ class AbstractPlayer():
 class AIPlayer(AbstractPlayer):
 
     def move(self,boardState,player):
-        print("TEST *************** ", boardState.score1, boardState.score2)
+        #print("TEST *************** ", boardState.score1, boardState.score2)
         newmove=minmaxCut.minmax(player, boardState.bins, boardState.score1, boardState.score2)
-        return newmove
+        return (newmove+1)
 
 
 class OpponentPlayer(AbstractPlayer):

@@ -5,7 +5,7 @@ from player import OpponentPlayer
 
 def play(playerA,playerB):
 
-        s = 6 # enter here the number of holes per player. Finally set to: 12
+        s = 12 # enter here the number of holes per player. Finally set to: 12
         order = input("who plays first? press 1 for our AIplayer and 2 for OpponentPlayer")
         if (order=="2"):
             player0=playerB
@@ -46,6 +46,7 @@ def play(playerA,playerB):
             #check end - winner or draw:
             if(myBoard.endGame):
                 end=True
+                print("Game is over.")
 
             # change active player
             playerNumber=(playerNumber % 2) +1
