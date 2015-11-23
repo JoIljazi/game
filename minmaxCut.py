@@ -60,7 +60,7 @@ def minmax(player,state, score1, score2):
                 v=max(v,minNode(nodeStack.peek()))
             o=o+1
 
-
+        nodeStack.pop()
         return v
 
     def minNode(state):
@@ -76,7 +76,7 @@ def minmax(player,state, score1, score2):
                 nodeStack.push(child)
                 v=min(v,maxNode(nodeStack.peek()))
             n=n+1
-
+        nodeStack.pop()  ### in order to get rid of the node that already generated all its children and needs to return its value on level up
         return v              
 
 
