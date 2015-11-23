@@ -81,10 +81,10 @@ def alphabeta(player,state, score1, score2):
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=min(v,maxNode(nodeStack.peek(),alpha,beta))
-                if v >= beta:
-                    nodeStack.pop()  ### for same reasons
+                if v <= alpha:
+                    nodeStack.pop()
                     return v
-                alpha = min(alpha, v)
+                beta = min(beta, v)
             n=n+1
         nodeStack.pop()  ### taking out the node that generated already all its children
         return v              
