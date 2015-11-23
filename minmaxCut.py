@@ -27,9 +27,9 @@ def minmax(player,state, score1, score2):
     ## evalFunctions
     def evalFunction(state):
         if (player==1):
-            delta = orig.score1 - orig.score2
+            delta = state.score1 - state.score2
         else:
-            delta = orig.score2 - orig.score1
+            delta = state.score2 - state.score1
         return delta
 
     
@@ -82,7 +82,7 @@ def minmax(player,state, score1, score2):
 
                           
     #start
-    results={}
+    #results={}
     v= -1000
     #nodeStack=Stack()
     #orig=Board(state, score1, score2)
@@ -90,14 +90,14 @@ def minmax(player,state, score1, score2):
     m=maxMoves-s
     while(m < maxMoves):
         child = updateState(nodeStack.peek(),m, player)
-        if(child.bins != orig.bins):
+        if(child.bins != nodeStack.peek().bins):
             nodeStack.push(child)
             temp=v
             v=max(v,minNode(nodeStack.peek()))
             if (v != temp):
-                results["value"]=v
-                results["move"]=m
+                
+                bestMove=m
         m = m+1
-    return results["move"]
+    return bestMove
                       
                 
