@@ -78,7 +78,7 @@ def alphabeta(player,state, score1, score2):
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=max(v,minNode(nodeStack.peek(),alpha,beta))
-                if v <= alpha:
+                if v >= beta: #should be?: if v <= alpha:
                     nodeStack.pop()
                     return v
                 alpha = max(alpha, v)
@@ -100,7 +100,7 @@ def alphabeta(player,state, score1, score2):
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=min(v,maxNode(nodeStack.peek(),alpha,beta))
-                if v <= alpha:  #should be here: if v >= beta
+                if v <= alpha:  #should be here?: if v >= beta
                     nodeStack.pop()
                     return v
                 beta = min(beta, v)
