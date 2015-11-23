@@ -5,7 +5,7 @@ from copy import deepcopy
 
 def minmax(player,state, score1, score2):
 
-    d = 55  # definition of depth of search
+    d = 4  # definition of depth of search
     s = 12 # enter here the number of holes per player. Finally set to: 12
 
 
