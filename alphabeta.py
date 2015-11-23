@@ -1,15 +1,20 @@
 from stack import Stack
 from board import Board
 from copy import deepcopy
-#from timeit import default_timer as timer
+from time import localtime
+
 
 def alphabeta(player,state, score1, score2):
 
-    d = 4  # definition of depth of search
-    s = 6 # enter here the number of holes per player. Finally set to: 12
+    d = 8  # definition of depth of search
+    s = 12 # enter here the number of holes per player. Finally set to: 12
 
 
-    #start = timer()
+    current_time = localtime()  # set timer for calculation
+    start = current_time.tm_sec
+    if (start>52):
+        start = start-60
+    end=(start+8)%60
 
 
     nodeStack=Stack()
@@ -28,15 +33,29 @@ def alphabeta(player,state, score1, score2):
     def evalFunction(state):
         
         if (player==1):
-            delta = state.score1 - state.score2
+            delta = state.score1 - state.score2 #get delta between our score and opponent's score
+            #if (state.score2 > (s*4)):  # means: we lost
+            #    delta=-96
+            #if (state.score1 > (s*4)):  # means: we won
+            #    delta=96
         else:
-            delta = state.score2 - state.score1
+            delta = state.score2 - state.score1 #get delta between our score and opponent's score
+            #if (state.score1 > (s*4)):  # means: we lost
+            #    delta=-96
+            #if (state.score2 > (s*4)):  # means: we won
+            #    delta=96
         return delta
 
     
     # when to stop going down in tree, returns true or false
     def cutOff(state):
-        if (nodeStack.size() == d or state.endGame):  # add time constraint
+        current_time2=localtime()
+        tm=current_time2.tm_sec
+        if (tm > 52):
+            tm=tm-60
+        if (nodeStack.size() == d or state.endGame or tm > end):  # stop when depth-level reached, or game over, or taking too much time
+            if (tm > end):
+                print("timout rerached")
             return True
         else:
             return False
@@ -59,7 +78,7 @@ def alphabeta(player,state, score1, score2):
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=max(v,minNode(nodeStack.peek(),alpha,beta))
-                if v >= beta:
+                if v <= alpha:
                     nodeStack.pop()
                     return v
                 alpha = max(alpha, v)
@@ -77,11 +96,11 @@ def alphabeta(player,state, score1, score2):
         n = minMoves-s
         while(n < minMoves):
             child=updateState(nodeStack.peek(),n,((player%2)+1))
-            print("from minNode Child is created as:",child.bins)
+            #print("from minNode Child is created as:",child.bins)
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=min(v,maxNode(nodeStack.peek(),alpha,beta))
-                if v <= alpha:
+                if v <= alpha:  #should be here: if v >= beta
                     nodeStack.pop()
                     return v
                 beta = min(beta, v)

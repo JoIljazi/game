@@ -1,15 +1,18 @@
 from stack import Stack
 from board import Board
 from copy import deepcopy
-#from timeit import default_timer as timer
+from time import localtime
+
 
 def minmax(player,state, score1, score2):
 
-    d = 4  # definition of depth of search
+    d = 6  # definition of depth of search
     s = 12 # enter here the number of holes per player. Finally set to: 12
 
 
-    #start = timer()
+    current_time = localtime()  # set timer for calculation
+    start = current_time.tm_sec
+    end=(start+8)%60
 
 
     nodeStack=Stack()
@@ -35,7 +38,8 @@ def minmax(player,state, score1, score2):
     
     # when to stop going down in tree, returns true or false
     def cutOff(state):
-        if (nodeStack.size() == d or state.endGame):  # add time constraint
+        current_time2=localtime()
+        if (nodeStack.size() == d or state.endGame or current_time2.tm_sec > end):  # stop when depth-level reached, or game over, or taking too much time
             return True
         else:
             return False
