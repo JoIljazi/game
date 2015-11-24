@@ -6,7 +6,7 @@ from time import localtime
 
 def alphabeta(player,state, score1, score2):
 
-    d = 8  # definition of depth of search
+    d = 7  # definition of depth of search
     s = 12 # enter here the number of holes per player. Finally set to: 12
 
 
@@ -53,9 +53,10 @@ def alphabeta(player,state, score1, score2):
         tm=current_time2.tm_sec
         if (tm > 52):
             tm=tm-60
-        if (nodeStack.size() == d or state.endGame or tm > end):  # stop when depth-level reached, or game over, or taking too much time
-            if (tm > end):
-                print("timout rerached")
+        #if (nodeStack.size() == d or state.endGame or tm > end):  # stop when depth-level reached, or game over, or taking too much time
+        if (nodeStack.size() == d or state.endGame):
+            #if (tm > end):
+            #    print("timout rerached")
             return True
         else:
             return False
@@ -78,7 +79,7 @@ def alphabeta(player,state, score1, score2):
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=max(v,minNode(nodeStack.peek(),alpha,beta))
-                if v >= beta: #should be?: if v <= alpha:
+                if v >= beta:
                     nodeStack.pop()
                     return v
                 alpha = max(alpha, v)
@@ -100,7 +101,7 @@ def alphabeta(player,state, score1, score2):
             if (child.bins != nodeStack.peek().bins):
                 nodeStack.push(child)
                 v=min(v,maxNode(nodeStack.peek(),alpha,beta))
-                if v <= alpha:  #should be here?: if v >= beta
+                if v <= alpha:
                     nodeStack.pop()
                     return v
                 beta = min(beta, v)
