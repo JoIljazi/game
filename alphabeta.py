@@ -113,8 +113,7 @@ def alphabeta(player,state, score1, score2):
     #start
     
     v= -1000
-    alpha= -1000
-    beta= 1000
+    
     
     m=maxMoves-s
     while(m < maxMoves):
@@ -122,7 +121,7 @@ def alphabeta(player,state, score1, score2):
         if(child.bins != orig.bins):
             nodeStack.push(child)
             temp=v
-            v=max(v,minNode(nodeStack.peek(),alpha,beta))
+            v=max(v,minNode(nodeStack.peek(),-1000,1000))
             if (v != temp):
  
                 bestMove=m
