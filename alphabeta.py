@@ -33,17 +33,19 @@ def alphabeta(player,state, score1, score2):
     def evalFunction(state):
         
         if (player==1):
-            delta = state.score1 - state.score2 #get delta between our score and opponent's score
-            #if (state.score2 > (s*4)):  # means: we lost
-            #    delta=-96
-            #if (state.score1 > (s*4)):  # means: we won
-            #    delta=96
+            if (state.score2 > (s*4)):  # means: we lost
+                delta=-96
+            elif (state.score1 > (s*4)):  # means: we won
+                delta=96
+            else:
+                delta = state.score1 - state.score2 #get delta between our score and opponent's score
         else:
-            delta = state.score2 - state.score1 #get delta between our score and opponent's score
-            #if (state.score1 > (s*4)):  # means: we lost
-            #    delta=-96
-            #if (state.score2 > (s*4)):  # means: we won
-            #    delta=96
+            if (state.score1 > (s*4)):  # means: we lost
+                delta=-96
+            elif (state.score2 > (s*4)):  # means: we won
+                delta=96
+            else:
+                delta = state.score2 - state.score1 #get delta between our score and opponent's score
         return delta
 
     
