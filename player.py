@@ -1,5 +1,6 @@
 import minmaxCut
 import alphabeta
+import alphabeta2
 class AbstractPlayer():
 
     def __init__(self,name):
@@ -7,15 +8,19 @@ class AbstractPlayer():
 
     def move(self,boardState,player):
 
-        throw("method not implemented")
+        print("method not implemented")
 
 
-class AIPlayer(AbstractPlayer):
+class AIPlayer1(AbstractPlayer):
 
     def move(self,boardState,player):
-        #print("TEST *************** ", boardState.score1, boardState.score2)
-        #newmove=minmaxCut.minmax(player, boardState.bins, boardState.score1, boardState.score2)
         newmove=alphabeta.alphabeta(player, boardState.bins, boardState.score1, boardState.score2)
+        return (newmove+1)
+
+class AIPlayer2(AbstractPlayer):
+
+    def move(self,boardState,player):
+        newmove=alphabeta2.alphabeta(player, boardState.bins, boardState.score1, boardState.score2)
         return (newmove+1)
 
 

@@ -6,20 +6,17 @@ from copy import deepcopy
 
 def alphabeta(player,state, score1, score2):
 
-    #d = 7  # definition of depth of search
+    d = 7  # definition of depth of search
     s = 12 # enter here the number of holes per player. Finally set to: 12
 
-    i=0
     fullHouses=s
-    for i in range(0,s):
+    for i in range(s,2*s):
         if (state[i] == 0):
             fullHouses=fullHouses-1
-        i=i+1
     if (fullHouses<7):
         d=8
     else:
         d=7
-
 
 
     #current_time = localtime()  # set timer for calculation
@@ -50,14 +47,14 @@ def alphabeta(player,state, score1, score2):
             elif (state.score1 > (s*4)):  # means: we won
                 delta=96
             else:
-                delta = state.score1 - state.score2 #get delta between our score and opponent's score
+                delta = (state.score1 - state.score2)+(state.bins[13] + state.bins[14]+state.bins[15]+state.bins[16])*0.5 #get delta between our score and opponent's score
         else:
             if (state.score1 > (s*4)):  # means: we lost
                 delta=-96
             elif (state.score2 > (s*4)):  # means: we won
                 delta=96
             else:
-                delta = state.score2 - state.score1 #get delta between our score and opponent's score
+                delta = (state.score2 - state.score1)+(state.bins[0] + state.bins[1]+state.bins[2]+state.bins[3])*0.5 #get delta between our score and opponent's score
         return delta
 
     
@@ -86,7 +83,7 @@ def alphabeta(player,state, score1, score2):
         if(cutOff(state)):
             st=nodeStack.pop()
             return evalFunction(st)
-        v= -999
+        v= -1000
         o = maxMoves-s
         while(o < maxMoves):
             child=updateState(nodeStack.peek(),o,player)
@@ -107,7 +104,7 @@ def alphabeta(player,state, score1, score2):
             st=nodeStack.pop()
             res = evalFunction(st)
             return res
-        v= 999
+        v= 1000
         n = minMoves-s
         while(n < minMoves):
             child=updateState(nodeStack.peek(),n,((player%2)+1))
@@ -126,7 +123,7 @@ def alphabeta(player,state, score1, score2):
                           
     #start
     
-    v= -999
+    v= -1000
     
     
     m=maxMoves-s

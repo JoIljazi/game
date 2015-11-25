@@ -4,14 +4,13 @@ class Board:
     score1=0
     score2=0
     endGame=False
+    moveNo=0
     s = 12 # enter here the number of holes per player. Finally set to: 12
     b = 96 # enter here the number of beans in total. Finally set to: 96
 
     
     def __init__(self, structure, score1, score2):
-        # self.bins=[1, 3, 2, 4, 0, 6, 0, 0, 0, 0, 3, 7] For testing
         self.bins = structure
-        #print("Original configuration: ", self.bins)
         self.score1 = score1
         self.score2 = score2
         
@@ -28,20 +27,12 @@ class Board:
         ongoingCollection=True
 
         while(ongoingCollection):
-            #print("Considering bin ", i%(self.s*2))
             if ((not self.ownBin(player,i%(self.s*2))) and ((tempBins[i%(self.s*2)] == 2) or (tempBins[i%(self.s*2)] == 3))):
                 points = points + tempBins[i%(self.s*2)]
-                #print("Earning ", tempBins[i%(self.s*2)])
                 tempBins[i%(self.s*2)] = 0
-                #print("Now I have ",points, " and the board is ", tempBins)
                 i=i-1
             else:
-                #print("Stopping!")
                 ongoingCollection=False
-                #if (self.ownBin(player,i%(self.s*2))):
-                    #print("Ended up in own houses ", i%(self.s*2))
-                #elif ((tempBins[i%12] != 2) and (tempBins[i%(self.s*2)] != 3)):
-                    #print("Stones neither 2 nor 3", tempBins[i%(self.s*2)])
 
         if(player==1):
             self.score1=self.score1+points
@@ -53,6 +44,7 @@ class Board:
 
     def updateBoard(self,player,move):  #moves are from 0 to 5 as array index, player is 1 or 2
         
+        self.moveNo = self.moveNo+1
         tempBins=deepcopy(self.bins) # copy by value
         
         stones=tempBins[move]
@@ -70,25 +62,16 @@ class Board:
 
         earnedPoints = self.collectPoints(player,(stones+move)%(self.s*2),tempBins)
 
-        if (self.validConfiguration(tempBins,player) and stones >0):                              #add here condition that house u move is not empty!!!
-            #print("Valid configuration found. Changing from ", self.bins, " to ", tempBins)
+        if (self.validConfiguration(tempBins,player) and stones >0):                              #if valid move, keep it
             self.bins=deepcopy(tempBins)
-            #print("Earned point ",earnedPoints)
-            #print("Player 1 score", self.score1)
-            #print("Player 2 score", self.score2)
         
 
             if(player==1):
                 playerBins=deepcopy(tempBins[0:self.s])
             else:
                 playerBins=deepcopy(tempBins[self.s:(self.s*2)])
-            
-            #self.checkMoves(playerBins)
             self.checkStatus(tempBins,player)
-            #print("Is game over?", self.endGame )
-        #else:
-            #print("Invalid configuration", tempBins)
-            #print("Original configuration unchanged", self.bins)
+
 
     def validConfiguration(self,tempBins,player):   #it should check if we are causing starv in opponent
         if (player==1):
@@ -139,5 +122,6 @@ class Board:
         print(player2Name, ":    ", housesP2)
         print("won beans player ", player1Name, ": ", self.score1)
         print("won beans player ", player2Name, ": ", self.score2)
+        print("played moves: ", self.moveNo)
 
 

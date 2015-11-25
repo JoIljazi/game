@@ -1,12 +1,13 @@
 from board import Board
-from player import AIPlayer
+from player import AIPlayer1
+from player import AIPlayer2
 from player import OpponentPlayer
 
 
-def play(playerA,playerB):
+def play(playerA,playerB, order):
 
         s = 12 # enter here the number of holes per player. Finally set to: 12
-        order = input("who plays first? press 1 for our AIplayer and 2 for OpponentPlayer")
+
         if (order=="2"):
             player0=playerB
             player1=playerA
@@ -15,6 +16,7 @@ def play(playerA,playerB):
             player1=playerB
 
         myBoard=Board([4] * (2 * s), 0, 0)
+        #myBoard=Board([1, 1, 4, 2, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5], 36, 40)
         myBoard.printBoard(player0.name, player1.name)
         playerNumber = 1
         end=False
@@ -62,18 +64,26 @@ def main():
 
     print()
     print("welcome to new game")
-    gameMode = input("single-Player-Mode: 1; multi-Player-Mode: 2; mode: ") # for test purposes
+    #gameMode = input("single-Player-Mode: 1; multi-Player-Mode: 2; mode: ") # for test purposes
 
     # built instance of AI player, as this is different dep. on gameMode:
-    if (gameMode=="1"):
-        myAI=AIPlayer("AI")
-    elif (gameMode=="2"):
-        aiName = input("give the name of one player (AIPlayer): ")
-        myAI=OpponentPlayer(aiName)
+    #if (gameMode=="1"):
+    #    myAI=AIPlayer("AI")
+    #elif (gameMode=="2"):
+    #    aiName = input("give the name of one player (AIPlayer): ")
+    #    myAI=OpponentPlayer(aiName)
     # build rest (independent from gameMode) and start:
     opponentName = input("give the name of opponent player: ")
+    order = input("who plays first? press 1 for our AIplayer and 2 for OpponentPlayer")
+
+    #create players
+    if (order=="1"):
+        myAI=AIPlayer1("AI")
+    else:
+        myAI=AIPlayer2("AI")
     myOpponent=OpponentPlayer(opponentName)
-    play(myAI, myOpponent)
+
+    play(myAI, myOpponent, order)
 
 
 
