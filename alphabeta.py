@@ -9,13 +9,14 @@ def alphabeta(player,state, score1, score2):
     #d = 7  # definition of depth of search
     s = 12 # enter here the number of holes per player. Finally set to: 12
 
-    i=0
-    fullHouses=s
-    for i in range(0,s):
+    fullHouses=2*s
+    sumHouse=0
+    for i in range(0,2*s):
         if (state[i] == 0):
             fullHouses=fullHouses-1
-        i=i+1
-    if (fullHouses<7):
+        else:
+            sumHouse = sumHouse+1
+    if (fullHouses<14 and sumHouse < 49):
         d=8
     else:
         d=7
