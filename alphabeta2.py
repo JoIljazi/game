@@ -21,7 +21,6 @@ def alphabeta(player,state, score1, score2):
     else:
         d=7
 
-
     #current_time = localtime()  # set timer for calculation
     #start = current_time.tm_sec
     #if (start>52):

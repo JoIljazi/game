@@ -16,7 +16,7 @@ def play(playerA,playerB, order):
             player1=playerB
 
         myBoard=Board([4] * (2 * s), 0, 0)
-        #myBoard=Board([1, 1, 4, 2, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5], 36, 40)
+        #myBoard=Board([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 11, 1, 5, 0, 1, 0, 0, 0, 0, 0, 23, 0], 6, 48)  # for setting up again
         myBoard.printBoard(player0.name, player1.name)
         playerNumber = 1
         end=False
@@ -66,12 +66,6 @@ def main():
     print("welcome to new game")
     #gameMode = input("single-Player-Mode: 1; multi-Player-Mode: 2; mode: ") # for test purposes
 
-    # built instance of AI player, as this is different dep. on gameMode:
-    #if (gameMode=="1"):
-    #    myAI=AIPlayer("AI")
-    #elif (gameMode=="2"):
-    #    aiName = input("give the name of one player (AIPlayer): ")
-    #    myAI=OpponentPlayer(aiName)
     # build rest (independent from gameMode) and start:
     opponentName = input("give the name of opponent player: ")
     order = input("who plays first? press 1 for our AIplayer and 2 for OpponentPlayer")
