@@ -33,7 +33,11 @@ def alphabeta(player,state, score1, score2):
     orig=Board(state, score1, score2)
     nodeStack.push(orig)
 
-
+ #adding some coments
+ #this is good
+ # no modifications
+ 
+ 
     if (player==1):
         maxMoves=s
         minMoves=s*2
