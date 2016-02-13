@@ -16,6 +16,11 @@ class Board:
         
     def collectPoints(self,player,lastAffected,tempBins):   
         lastAffected=lastAffected+self.b  # why?!?
+#this is ok
+#and this
+#a new request
+#this doesnt affect the code
+#python is ok
 
         i=lastAffected
 
